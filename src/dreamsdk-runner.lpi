@@ -20,9 +20,8 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="1"/>
-      <RevisionNr Value="2"/>
-      <BuildNr Value="105"/>
-      <StringTable Comments="http://dreamsdk.sizious.com/" CompanyName="The DreamSDK Team" FileDescription="DreamSDK Shell Runner" InternalName="dreamsdk-runner" LegalCopyright="© Copyleft 2018" LegalTrademarks="Sega and Dreamcast are registered trademark of Sega Games Co., Ltd." OriginalFilename="dreamsdk-runner.exe" ProductName="DreamSDK" ProductVersion="1.1.0.0"/>
+      <BuildNr Value="107"/>
+      <StringTable Comments="http://dreamsdk.sizious.com/" CompanyName="The DreamSDK Team" FileDescription="DreamSDK Shell Runner" InternalName="dreamsdk-runner" LegalCopyright="© Copyleft 2019" LegalTrademarks="Sega and Dreamcast are registered trademark of Sega Games Co., Ltd." OriginalFilename="dreamsdk-runner.exe" ProductName="DreamSDK" ProductVersion="1.1.0.0"/>
     </VersionInfo>
     <BuildModes Count="2">
       <Item1 Name="Debug" Default="True"/>
@@ -64,7 +63,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="&quot;dreamsdk-version&quot;"/>
+        <CommandLineParams Value="machin"/>
       </local>
     </RunParams>
     <RequiredPackages Count="2">
