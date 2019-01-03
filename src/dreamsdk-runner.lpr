@@ -43,14 +43,19 @@ begin
 end;
 
 begin
-  ShellCommandLine := GetCommandLine;
-  if ShellCommandLine <> '' then
-    with TDreamcastSoftwareDevelopmentKitRunner.Create do
-      try
-        if CheckHealty then
-          ExitCode := StartShellCommand(ShellCommandLine);
-      finally
-        Free;
-      end;
+  if not IsGetModuleVersionCommand then
+  begin
+    ShellCommandLine := GetCommandLine;
+    if ShellCommandLine <> '' then
+      with TDreamcastSoftwareDevelopmentKitRunner.Create do
+        try
+          if CheckHealty then
+            ExitCode := StartShellCommand(ShellCommandLine);
+        finally
+          Free;
+        end;
+  end
+  else
+    SaveModuleVersion;
 end.
 
