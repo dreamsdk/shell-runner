@@ -43,6 +43,9 @@ begin
 end;
 
 begin
+{$IFDEF DEBUG}
+  WriteLn(sLineBreak, sLineBreak, '*** START ***');
+{$ENDIF}
   if not IsGetModuleVersionCommand then
   begin
     ShellCommandLine := GetCommandLine;

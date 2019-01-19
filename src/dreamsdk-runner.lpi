@@ -20,7 +20,7 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="1"/>
-      <BuildNr Value="114"/>
+      <BuildNr Value="136"/>
       <StringTable Comments="http://dreamsdk.sizious.com/" CompanyName="The DreamSDK Team" FileDescription="DreamSDK Shell Runner" InternalName="dreamsdk-runner" LegalCopyright="© Copyleft 2019" LegalTrademarks="Sega and Dreamcast are registered trademark of Sega Games Co., Ltd." OriginalFilename="dreamsdk-runner.exe" ProductName="DreamSDK" ProductVersion="1.1.0.0"/>
     </VersionInfo>
     <BuildModes Count="2">
@@ -63,7 +63,8 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="machin"/>
+        <CommandLineParams Value="/opt/toolchains/dc/kos/utils/genromfs/genromfs -f romdisk_test.img -d romdisk -v -x .svn -x .git -x .gitkeep -x .keepme"/>
+        <WorkingDirectory Value="E:\temp\rdprj"/>
       </local>
     </RunParams>
     <RequiredPackages Count="2">
