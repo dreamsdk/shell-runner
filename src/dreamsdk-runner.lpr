@@ -44,7 +44,7 @@ end;
 
 begin
 {$IFDEF DEBUG}
-  WriteLn(sLineBreak, sLineBreak, '*** START ***');
+  WriteLn('*** START ***');
 {$ENDIF}
   if not IsGetModuleVersionCommand then
   begin
