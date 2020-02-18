@@ -13,8 +13,6 @@ uses
   {$ENDIF}{$ENDIF}
   SysUtils,
   Classes,
-  Version,
-  SysTools,
   VerIntf,
   Runner;
 
