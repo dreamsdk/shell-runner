@@ -13,6 +13,8 @@ uses
   {$ENDIF}{$ENDIF}
   SysUtils,
   Classes,
+  SysTools,
+  FSTools,
   VerIntf,
   Runner;
 
@@ -28,11 +30,21 @@ var
 begin
   Buffer := TStringList.Create;
   try
+{$IFDEF DEBUG}
+    DebugLog('GetCommandLine: ' + IntToStr(ParamCount) + ' parameter(s)');
+{$ENDIF}
     for i := 1 to ParamCount do
     begin
       Param := Trim(ParamStr(i));
-      if Param <> '' then
+      if not IsEmpty(Param) then
+      begin
+        if FileExists(Param) or DirectoryExists(Param) then
+          Param := SystemToUnixPath(Param);
+{$IFDEF DEBUG}
+        DebugLog('  ' + Param);
+{$ENDIF}
         Buffer.Add(Param);
+      end;
     end;
     Result := Trim(StringReplace(Buffer.Text, sLineBreak, ' ', [rfReplaceAll]));
   finally
@@ -44,19 +56,29 @@ begin
 {$IFDEF DEBUG}
   WriteLn('*** START ***');
 {$ENDIF}
-  if not IsGetModuleVersionCommand then
+
+  ExitCode := ERROR_SUCCESS;
+
+  if IsGetModuleVersionCommand then
   begin
-    ShellCommandLine := GetCommandLine;
-    if ShellCommandLine <> '' then
-      with TDreamcastSoftwareDevelopmentKitRunner.Create do
-        try
-          if CheckHealty then
-            ExitCode := StartShellCommand(ShellCommandLine);
-        finally
-          Free;
-        end;
-  end
-  else
     SaveModuleVersion;
+    Exit;
+  end;
+
+  ShellCommandLine := GetCommandLine;
+{$IFDEF DEBUG}
+  DebugLog('ShellCommandLine: [' + ShellCommandLine + ']');
+{$ENDIF}
+
+  if not IsEmpty(ShellCommandLine) then
+    with TDreamcastSoftwareDevelopmentKitRunner.Create do
+      try
+        if CheckHealty then
+          ExitCode := StartShellCommand(ShellCommandLine)
+        else
+          ExitCode := ERROR_ENVVAR_NOT_FOUND;
+      finally
+        Free;
+      end;
 end.
 
