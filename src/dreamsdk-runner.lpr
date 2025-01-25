@@ -74,7 +74,10 @@ begin
     with TDreamcastSoftwareDevelopmentKitRunner.Create do
       try
         if CheckHealty then
-          ExitCode := StartShellCommand(ShellCommandLine)
+        begin
+          WorkingDirectory := GetCurrentDir;
+          ExitCode := StartShellCommand(ShellCommandLine);
+        end
         else
           ExitCode := ERROR_ENVVAR_NOT_FOUND;
       finally
