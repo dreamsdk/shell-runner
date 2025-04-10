@@ -14,6 +14,7 @@ uses
   SysUtils,
   Classes,
   SysTools,
+  StrTools,
   FSTools,
   VerIntf,
   Runner;
