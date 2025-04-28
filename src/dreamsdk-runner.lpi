@@ -48,6 +48,7 @@
           <Linking>
             <Debugging>
               <GenerateDebugInfo Value="False"/>
+              <DebugInfoType Value="dsDwarf3"/>
             </Debugging>
             <LinkSmart Value="True"/>
           </Linking>
@@ -124,7 +125,8 @@
       </Debugging>
     </Linking>
     <Other>
-      <CustomOptions Value="-dDEBUG"/>
+      <CustomOptions Value="-dDEBUG
+-dDEBUG_DISABLE_CONSOLE_PRINT"/>
     </Other>
   </CompilerOptions>
 </CONFIG>
