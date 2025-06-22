@@ -23,6 +23,15 @@ var
   LogContext: TLogMessageContext;
   ShellCommandLine: string;
 
+function GetRootSystemCommand: string;
+var
+  ConfigurationFileName: TFileName;
+
+begin
+  ConfigurationFileName := ChangeFileExt(ParamStr(0), '.cfg');
+  Result := LoadFileToString(ConfigurationFileName);
+end;
+
 function GetCommandLine: string;
 var
   LogContext: TLogMessageContext;
@@ -34,10 +43,18 @@ begin
   LogContext := LogMessageEnter({$I %FILE%}, {$I %CURRENTROUTINE%});
   Buffer := TStringBuilder.Create;
   try
-
     LogMessage(LogContext, Format('Parsing %d parameter(s)', [ParamCount]));
-    Sep := EmptyStr;
 
+    // Add system command first
+    Sep := EmptyStr;
+    Param := GetRootSystemCommand;
+    if not IsEmpty(Param) then
+    begin
+      Buffer.Append(Param);
+      Sep := WhiteSpaceStr;
+    end;
+
+    // Add all parameters after system command if any
     for i := 1 to ParamCount do
     begin
       Param := Trim(ParamStr(i));
@@ -50,6 +67,7 @@ begin
       Sep := WhiteSpaceStr;
     end;
 
+    // Return the result!
     Result := Buffer.ToString;
     LogMessage(LogContext, Format('Result="%s"', [Result]));
   finally
