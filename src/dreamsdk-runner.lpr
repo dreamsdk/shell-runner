@@ -13,6 +13,7 @@ uses
   {$ENDIF}{$ENDIF}
   SysUtils,
   Classes,
+  LazFileUtils,
   SysTools,
   StrTools,
   FSTools,
@@ -21,15 +22,29 @@ uses
 
 var
   LogContext: TLogMessageContext;
-  ShellCommandLine: string;
+  ShellCommandLine: string = '';
+  RootSystemPath: string = '';
 
-function GetRootSystemCommand: string;
+function GetRootSystemPath: string;
 var
   ConfigurationFileName: TFileName;
 
 begin
-  ConfigurationFileName := ChangeFileExt(ParamStr(0), '.cfg');
-  Result := LoadFileToString(ConfigurationFileName);
+  if IsEmpty(RootSystemPath) then
+  begin
+    ConfigurationFileName := ChangeFileExt(ParamStr(0), '.cfg');
+    if FileExists(ConfigurationFileName) then
+      RootSystemPath := LoadFileToString(ConfigurationFileName);
+  end;
+  Result := RootSystemPath;
+end;
+
+function GetRootSystemCommand: string;
+begin
+  Result := EmptyStr;
+  if not IsEmpty(GetRootSystemPath) then
+    Result := GetRootSystemPath + '/'
+      + ExtractFileNameWithoutExt(GetProgramName);
 end;
 
 function GetCommandLine: string;
@@ -60,8 +75,7 @@ begin
       Param := Trim(ParamStr(i));
       if not IsEmpty(Param) then
       begin
-        if FileExists(Param) or DirectoryExists(Param) then
-          Param := SystemToUnixPath(Param);
+        Param := SystemToUnixPath(Param);
         Buffer.Append(Sep + Param);
       end;
       Sep := WhiteSpaceStr;
@@ -93,7 +107,10 @@ begin
     try
       // Grab the command-line passed to DreamSDK Runner
       ShellCommandLine := GetCommandLine;
-      LogMessage(LogContext, Format('ShellCommandLine: [%s]', [ShellCommandLine]));
+      LogMessage(LogContext, Format('ShellCommandLine [workdir: "%s"]: [%s]', [
+        GetCurrentDir,
+        ShellCommandLine
+      ]));
 
       // Check if the command-line to execute in Bash is passed
       if IsEmpty(ShellCommandLine) then
@@ -108,6 +125,7 @@ begin
           if CheckHealty then
           begin
             // We can execute, so do it!
+            RootSystemPath := GetRootSystemPath;
             WorkingDirectory := GetCurrentDir;
             ExitCode := StartShellCommand(ShellCommandLine);
           end
